@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 
 
-def Patients(APIView):
+class Patients(APIView):
     def get(self, request, format=None):
-        return Response {'Hello Worls':"This "}
+        return Response({'Hello Worls':"This is my first API"})
     
