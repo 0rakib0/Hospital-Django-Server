@@ -17,10 +17,16 @@ class patientsList(APIView):
         return Response(patients_serializer.data)
     
     def post(self, request, format=None):
+        print('---------------------------------')
         new_patients_data = PatientsSerializer(data=request.data)
+        
         if new_patients_data.is_valid():
+            print('----------Helo---------------')
+            if new_patients_data:
+                print(True)
             new_patients_data.save()
             return Response({'message':'Data Successfully submited'}, status=status.HTTP_201_CREATED)
         else:
+            print(new_patients_data.errors)
             return Response(new_patients_data.errors)
     
