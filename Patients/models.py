@@ -11,7 +11,7 @@ class Patients(models.Model):
     gender = models.CharField(max_length=20)
     full_address = models.CharField(max_length=260)
     details = models.TextField()
-    patients_pic = models.ImageField(upload_to='patients')
+    # patients_pic = models.ImageField(upload_to='patients')
     create_at = models.DateTimeField(auto_now_add=True)
 
 
