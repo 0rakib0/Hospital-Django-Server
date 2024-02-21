@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import AddPatients
+from .models import Patients
 # Register your models here.
 
-admin.site.register(AddPatients)
+admin.site.register(Patients)

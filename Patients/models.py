@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-class AddPatients(models.Model):
+class Patients(models.Model):
     full_name = models.CharField(max_length=160)
     date_of_birth = models.DateField()
     age = models.CharField(max_length=20)
