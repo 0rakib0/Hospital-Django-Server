@@ -6,4 +6,5 @@ class PatientsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patients
         fields = '__all__'
+        read_only_fields = ('id', 'patients_Id', 'create_at')
 

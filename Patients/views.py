@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Patients
 from .serializers import PatientsSerializer
 from rest_framework import status
-
+import random
 from rest_framework.parsers import MultiPartParser, FormParser
 
 # Create your views here.
@@ -12,20 +13,22 @@ from rest_framework.parsers import MultiPartParser, FormParser
 
 
 class patientsList(APIView):
-    
     parser_classes = (MultiPartParser, FormParser)
     
-    def get(self, request, format=None):
-        patients_list = Patients.objects.all()
+    def get(self, request, id=None, format=None):
+        if id:
+            patients_list = Patients.objects.get(id=id)
+            patients_serializer = PatientsSerializer(patients_list)
+            return Response(patients_serializer.data)
+        else:
+            patients_list = Patients.objects.all()
         patients_serializer = PatientsSerializer(patients_list, many=True)
         return Response(patients_serializer.data)
     
     def post(self, request, format=None):
-        print('---------------------------------')
         new_patients_data = PatientsSerializer(data=request.data)
         
         if new_patients_data.is_valid():
-            print('----------Helo---------------')
             if new_patients_data:
                 print(True)
             new_patients_data.save()
@@ -33,4 +36,46 @@ class patientsList(APIView):
         else:
             print(new_patients_data.errors)
             return Response(new_patients_data.errors)
+        
+        
+        
+    def put(self, request, id, format=None):
+        patients = Patients.objects.get(id=id)
+        update_patients = PatientsSerializer(patients, data=request.data)
+        print(update_patients)
+       
+        update_patients = PatientsSerializer(patients, data=request.data, exclude=['patients_pic'])
+        if update_patients.is_valid():
+            update_patients.save()
+            return Response({'message':'Data Successfully updated'}, status=status.HTTP_200_OK)
+        else:
+            print(update_patients.errors)
+            return Response(update_patients.errors)
+        
+        
+        
+# @api_view(['PUT'])       
+# def update_delete_patients(request, id):
+#     if request.method == 'PUT':
+#         print('Hello Update Methods running')
+        
+@api_view(['GEt'])
+def dischargePatients(request):
+    if request.method == 'GET':
+        discherge_patients = Patients.objects.filter(disCharged=True)
+        discherge_patients = PatientsSerializer(discherge_patients, many=True)
+        return Response(discherge_patients.data, status=status.HTTP_200_OK)
+    else:
+        return Response(discherge_patients.error, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+@api_view(['GEt'])
+def inTreatment(request):
+    if request.method == 'GET':
+        inTreatment = Patients.objects.filter(disCharged=False)
+        inTreatment = PatientsSerializer(inTreatment, many=True)
+        return Response(inTreatment.data, status=status.HTTP_200_OK)
+    else:
+        return Response(inTreatment.error, status=status.HTTP_400_BAD_REQUEST)
+    
     
