@@ -5,12 +5,16 @@ from .models import Patients
 from .serializers import PatientsSerializer
 from rest_framework import status
 
+from rest_framework.parsers import MultiPartParser, FormParser
 
 # Create your views here.
 
 
 
 class patientsList(APIView):
+    
+    parser_classes = (MultiPartParser, FormParser)
+    
     def get(self, request, format=None):
         patients_list = Patients.objects.all()
         patients_serializer = PatientsSerializer(patients_list, many=True)
