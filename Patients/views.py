@@ -41,23 +41,29 @@ class patientsList(APIView):
         
     def put(self, request, id, format=None):
         patients = Patients.objects.get(id=id)
-        update_patients = PatientsSerializer(patients, data=request.data)
-        print(update_patients)
-       
-        update_patients = PatientsSerializer(patients, data=request.data, exclude=['patients_pic'])
-        if update_patients.is_valid():
-            update_patients.save()
-            return Response({'message':'Data Successfully updated'}, status=status.HTTP_200_OK)
+        data = request.data
+
+        patients.full_name = data['full_name']
+        patients.date_of_birth = data['date_of_birth']
+        patients.age = data['age']
+        patients.phone = data['phone']
+        patients.email = data['email']
+        patients.gender = data['gender']
+        patients.full_address = data['full_address']
+        patients.details = data['details']
+        if data['patients_pic'] != 'undefined' and data['patients_pic'] != None:
+            patients.patients_pic = data['patients_pic']
+        patients.save()        
+        return Response({'message':'Data Successfully updated'}, status=status.HTTP_200_OK)
+    
+    def delete(self, request, id, format=None):
+        patient_object = Patients.objects.get(id=id)
+        if patient_object:
+            patient_object.delete()
+            return Response({'message':'success'}, status=status.HTTP_200_OK)
         else:
-            print(update_patients.errors)
-            return Response(update_patients.errors)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         
-        
-        
-# @api_view(['PUT'])       
-# def update_delete_patients(request, id):
-#     if request.method == 'PUT':
-#         print('Hello Update Methods running')
         
 @api_view(['GEt'])
 def dischargePatients(request):
