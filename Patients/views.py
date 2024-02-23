@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Patients
-from .serializers import PatientsSerializer
+from .models import Patients, Doctor
+from .serializers import PatientsSerializer, DoctorSerializer
 from rest_framework import status
 import random
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -11,7 +11,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 # Create your views here.
 
 
-
+# -------------------- Patients Releted Views -------------------------
 class patientsList(APIView):
     parser_classes = (MultiPartParser, FormParser)
     
@@ -85,3 +85,10 @@ def inTreatment(request):
         return Response(inTreatment.error, status=status.HTTP_400_BAD_REQUEST)
     
     
+
+# ----------------------------- Doctor Releted View ------------------------------
+class Doctors(APIView):
+    def get(self, request, format=False):
+        doctor_obj = Doctor.objects.all()
+        docto_serializer = DoctorSerializer(doctor_obj, many=True)
+        return Response(docto_serializer.data, status=status.HTTP_200_OK)
