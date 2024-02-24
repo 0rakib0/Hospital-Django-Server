@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Patients',
+    'Doctors',
     'rest_framework',
     "corsheaders",
 ]
