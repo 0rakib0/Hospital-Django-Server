@@ -7,7 +7,7 @@ randomNuber = random.randint(10,10000)
 
 class Doctor(models.Model):
     doctorName = models.CharField(max_length=256)
-    doctorId = models.CharField(max_length=20, blank=True, null=True)
+    doctorId = models.CharField(max_length=20, blank=True, null=True, unique=True)
     date_of_birth = models.DateField()
     speacialization = models.CharField(max_length=256)
     experience = models.CharField(max_length=256)
