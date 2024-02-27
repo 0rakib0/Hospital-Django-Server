@@ -4,7 +4,7 @@ from Patients.models import Patients
 
 class Payment(models.Model):
     patient           = models.ForeignKey(Patients, on_delete=models.CASCADE)
-    patientId         = models.CharField(max_length=256)
+    patientId         = models.CharField(max_length=256, null=True, blank=True)
     patientEmail      = models.EmailField()
     department        = models.CharField(max_length=256)
     service           = models.CharField(max_length=156)

@@ -17,5 +17,15 @@ class Payments(APIView):
             paymentObj = Payment.objects.all()
             paymentSR = PaymentSerializer(paymentObj, many=True)
             return Response(paymentSR.data, status=status.HTTP_200_OK)
+        
+    def post(self, request, format=None):
+        print('0000000000000000000')
+        SerializeData = PaymentSerializer(data=request.data)
+        if SerializeData.is_valid():
+            # SerializeData.save()
+            return Response({'message':'dataSuccessfully created'}, status=status.HTTP_201_CREATED)
+        else:
+            print(SerializeData._errors)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    Response({'message':'Payment Successfully added'})
+    
