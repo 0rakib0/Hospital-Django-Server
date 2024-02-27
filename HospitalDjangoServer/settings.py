@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'Doctors',
     'rest_framework',
     "corsheaders",
+    "UtilizeApp",
 ]
 
 
