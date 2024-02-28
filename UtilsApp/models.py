@@ -1,5 +1,6 @@
 from django.db import models
 from Patients.models import Patients
+from Doctors.models import Doctor
 # Create your models here.
 
 class Payment(models.Model):
@@ -16,3 +17,19 @@ class Payment(models.Model):
 
     def __str__(self) -> str:
         return str(self.patient.full_name)
+    
+
+class Appoinments(models.Model):
+    patient = models.ForeignKey(Patients, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    department = models.CharField(max_length=156)
+    appoinmentDate = models.DateField()
+    timeSlot = models.CharField(max_length=20)
+    tokenNumber = models.CharField(max_length=20, blank=True, null=True)
+    problems = models.TextField()
+    tokenNumber = models.CharField(max_length=20, blank=True, null=True)
+    approveStatus = models.CharField(max_length=20, blank=True, null=True , default='Pending')
+    createdAtt        = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return str(self.patient.full_name) + "'s apoinment"
