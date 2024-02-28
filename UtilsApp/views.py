@@ -8,7 +8,6 @@ from .serializers import PaymentSerializer
 
 class Payments(APIView):
     def get(self, request, id=None, format=None):
-        print('--------------------------------')
         if id:
             paymentObj = Payment.objects.get(id=id)
             paymentSR = PaymentSerializer(paymentObj, many=True)
@@ -20,9 +19,6 @@ class Payments(APIView):
         
     def post(self, request, format=None):
         SerializeData = PaymentSerializer(data=request.data)
-        data = request.data 
-        print('-------------------------')
-        print(data['patient'])
         if SerializeData.is_valid():
             SerializeData.save()
             return Response({'message':'dataSuccessfully created'}, status=status.HTTP_201_CREATED)
