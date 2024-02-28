@@ -10,7 +10,7 @@ class Payment(models.Model):
     service           = models.CharField(max_length=156)
     paymentType       = models.CharField(max_length=156)
     costOfTreatment   = models.FloatField()
-    chardOrChackNo    = models.CharField(max_length=256)
+    chardOrChackNo    = models.CharField(max_length=256, null=True, blank=True)
     createdAtt        = models.DateTimeField(auto_now_add=True)
 
 

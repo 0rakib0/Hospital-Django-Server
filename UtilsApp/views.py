@@ -7,9 +7,9 @@ from .serializers import PaymentSerializer
 # Create your views here.
 
 class Payments(APIView):
-    def get(self, request, id=None, format=None):
-        if id:
-            paymentObj = Payment.objects.get(id=id)
+    def get(self, request, userId=None, format=None):
+        if userId:
+            paymentObj = Payment.objects.filter(patient=userId)
             paymentSR = PaymentSerializer(paymentObj, many=True)
             return Response(paymentSR.data, status=status.HTTP_200_OK)
         else:
