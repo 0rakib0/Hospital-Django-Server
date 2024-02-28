@@ -19,10 +19,12 @@ class Payments(APIView):
             return Response(paymentSR.data, status=status.HTTP_200_OK)
         
     def post(self, request, format=None):
-        print('0000000000000000000')
         SerializeData = PaymentSerializer(data=request.data)
+        data = request.data 
+        print('-------------------------')
+        print(data['patient'])
         if SerializeData.is_valid():
-            # SerializeData.save()
+            SerializeData.save()
             return Response({'message':'dataSuccessfully created'}, status=status.HTTP_201_CREATED)
         else:
             print(SerializeData._errors)
