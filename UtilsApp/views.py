@@ -31,5 +31,12 @@ class Appoinment(APIView):
         appoinmentObj = Appoinments.objects.all()
         appoinmentSr = AppoinmentSerializer(appoinmentObj, many=True)
         return Response(appoinmentSr.data, status=status.HTTP_200_OK)
-
+    
+    def post(self, request, format=None):
+        AppoinmentInfo = AppoinmentSerializer(data=request.data)
+        if AppoinmentInfo.is_valid():
+            AppoinmentInfo.save()
+            return Response({'message':'success'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(AppoinmentInfo.errors, status=status.HTTP_400_BAD_REQUEST)
     
