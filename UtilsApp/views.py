@@ -1,9 +1,12 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Payment, Appoinments
 from .serializers import PaymentSerializer, AppoinmentSerializer
+from django.core.exceptions import ObjectDoesNotExist
+from rest_framework.exceptions import NotFound
 # Create your views here.
 
 class Payments(APIView):
@@ -27,10 +30,11 @@ class Payments(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         
 class Appoinment(APIView):
-    def get (self, request, pId = None, format=None):
-        if pId:
-            appoinmentObj = Appoinments.objects.filter(patient = pId)
-            appoinmentSr = AppoinmentSerializer(appoinmentObj, many=True)
+    def get (self, request, id = None, format=None):
+        print(id)
+        if id:
+            appoinmentObj = Appoinments.objects.get(id=id)
+            appoinmentSr = AppoinmentSerializer(appoinmentObj)
             return Response(appoinmentSr.data, status=status.HTTP_200_OK)
         else:
             appoinmentObj = Appoinments.objects.all()
@@ -44,4 +48,18 @@ class Appoinment(APIView):
             return Response({'message':'success'}, status=status.HTTP_201_CREATED)
         else:
             return Response(AppoinmentInfo.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+  
+        
+
+@api_view(['GET'])
+def PatientsAppoinmnet(request, patientsId):
+    try:
+        appoinmentObj = Appoinments.objects.filter(patient = patientsId)
+        if appoinmentObj.exists():
+            appoinmentSr = AppoinmentSerializer(appoinmentObj, many=True)
+            return Response(appoinmentSr.data, status=status.HTTP_200_OK)
+        else:
+            raise ObjectDoesNotExist
+    except ObjectDoesNotExist:
+        raise NotFound('Appoinment nt found for the given patients ID')
