@@ -27,10 +27,15 @@ class Payments(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         
 class Appoinment(APIView):
-    def get (self, request, format=None):
-        appoinmentObj = Appoinments.objects.all()
-        appoinmentSr = AppoinmentSerializer(appoinmentObj, many=True)
-        return Response(appoinmentSr.data, status=status.HTTP_200_OK)
+    def get (self, request, pId = None, format=None):
+        if pId:
+            appoinmentObj = Appoinments.objects.filter(patient = pId)
+            appoinmentSr = AppoinmentSerializer(appoinmentObj, many=True)
+            return Response(appoinmentSr.data, status=status.HTTP_200_OK)
+        else:
+            appoinmentObj = Appoinments.objects.all()
+            appoinmentSr = AppoinmentSerializer(appoinmentObj, many=True)
+            return Response(appoinmentSr.data, status=status.HTTP_200_OK)
     
     def post(self, request, format=None):
         AppoinmentInfo = AppoinmentSerializer(data=request.data)
