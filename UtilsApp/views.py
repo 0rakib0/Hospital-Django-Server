@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Payment
-from .serializers import PaymentSerializer
+from .models import Payment, Appoinments
+from .serializers import PaymentSerializer, AppoinmentSerializer
 # Create your views here.
 
 class Payments(APIView):
@@ -25,5 +25,11 @@ class Payments(APIView):
         else:
             print(SerializeData._errors)
             return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+class Appoinment(APIView):
+    def get (self, request, format=None):
+        appoinmentObj = Appoinments.objects.all()
+        appoinmentSr = AppoinmentSerializer(appoinmentObj, many=True)
+        return Response(appoinmentSr.data, status=status.HTTP_200_OK)
 
     
