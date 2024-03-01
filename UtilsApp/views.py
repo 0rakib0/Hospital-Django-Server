@@ -7,9 +7,17 @@ from .models import Payment, Appoinments
 from .serializers import PaymentSerializer, AppoinmentSerializer
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.exceptions import NotFound
+from django.core.mail import send_mail
 # Create your views here.
 
 class Payments(APIView):
+    # send_mail(
+    #     "first email send",
+    #     "Hello I want to sest Send email.",
+    #     "hassanrakibul926@gmail.com",
+    #     ["neyamew161@artgulin.com"],
+    #     fail_silently=False,
+    # )
     def get(self, request, userId=None, format=None):
         if userId:
             paymentObj = Payment.objects.filter(patient=userId)
@@ -63,3 +71,5 @@ def PatientsAppoinmnet(request, patientsId):
             raise ObjectDoesNotExist
     except ObjectDoesNotExist:
         raise NotFound('Appoinment nt found for the given patients ID')
+    
+

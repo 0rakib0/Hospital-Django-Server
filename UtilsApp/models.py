@@ -43,5 +43,10 @@ class Appoinments(models.Model):
     def __str__(self) -> str:
         return str(self.patient.full_name) + "'s apoinment"
     
+
+class Notise(models.Model):
+    notise = models.TextField()
+    readStatus = models.BooleanField(default=False)
+    createAt = models.DateTimeField(auto_now_add=True)
     
     
