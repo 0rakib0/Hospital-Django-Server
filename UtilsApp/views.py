@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Payment, Appoinments, Notise, Message
-from .serializers import PaymentSerializer, AppoinmentSerializer, NotiseSerializer
+from .serializers import PaymentSerializer, AppoinmentSerializer, NotiseSerializer, MassageSerializer
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.exceptions import NotFound
 from django.core.mail import send_mail
@@ -80,6 +80,16 @@ class NotiseView(APIView):
             return Response(notiseSr.data, status=status.HTTP_200_OK)
         else:
             raise NotFound('Notise Not Fund')
+        
+    
+class MessageView(APIView):
+    def get(self, request, format=None):
+        msgObj = Message.objects.all()
+        if msgObj.exists():
+            msgSerializer = MassageSerializer(msgObj, many=True)
+            return Response(msgSerializer.data, status=status.HTTP_200_OK)
+        else:
+            raise NotFound('Message Not found')
 
     
 
