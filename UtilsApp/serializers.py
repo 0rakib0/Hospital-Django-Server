@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Payment, Appoinments, Notise
+from .models import Payment, Appoinments, Notise, Message
 from Patients.serializers import PatientsSerializer
 from Doctors.serializers import DoctorSerializer
 
@@ -19,4 +19,10 @@ class AppoinmentSerializer(serializers.ModelSerializer):
 class NotiseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notise
+        fields = '__all__'
+
+class MassageSerializer(serializers.ModelSerializer):
+    doctor = DoctorSerializer()
+    class Meta:
+        model = Message
         fields = '__all__'

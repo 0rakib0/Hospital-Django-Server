@@ -3,8 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Payment, Appoinments
-from .serializers import PaymentSerializer, AppoinmentSerializer
+from .models import Payment, Appoinments, Notise, Message
+from .serializers import PaymentSerializer, AppoinmentSerializer, NotiseSerializer
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.exceptions import NotFound
 from django.core.mail import send_mail
@@ -71,5 +71,15 @@ def PatientsAppoinmnet(request, patientsId):
             raise ObjectDoesNotExist
     except ObjectDoesNotExist:
         raise NotFound('Appoinment nt found for the given patients ID')
+
+class NotiseView(APIView):
+    def get(self, request, format=None):
+        notiseObj = Notise.objects.all()
+        if notiseObj.exists():
+            notiseSr = NotiseSerializer(notiseObj, many=True)
+            return Response(notiseSr.data, status=status.HTTP_200_OK)
+        else:
+            raise NotFound('Notise Not Fund')
+
     
 

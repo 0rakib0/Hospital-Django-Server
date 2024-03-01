@@ -48,5 +48,12 @@ class Notise(models.Model):
     notise = models.TextField()
     readStatus = models.BooleanField(default=False)
     createAt = models.DateTimeField(auto_now_add=True)
+
+
+class Message(models.Model):
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    message = models.TextField()
+    readStatus = models.BooleanField(default=False)
+    creatAt = models.DateTimeField(auto_now_add=True)
     
     
