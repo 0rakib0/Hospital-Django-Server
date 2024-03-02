@@ -97,11 +97,19 @@ class NotiseView(APIView):
 class MessageView(APIView):
     def get(self, request, format=None):
         msgObj = Message.objects.all()
-        if msgObj.exists():
-            msgSerializer = MassageSerializer(msgObj, many=True)
-            return Response(msgSerializer.data, status=status.HTTP_200_OK)
+        msgSerializer = MassageSerializer(msgObj, many=True)
+        return Response(msgSerializer.data, status=status.HTTP_200_OK)
+    
+    def post(self, request, format=None):
+        messageSr = MassageSerializer(data=request.data)
+        print(messageSr)
+        if messageSr.is_valid():
+            print('---------------------------------')
+            messageSr.save()
+            return Response({'message':'Message Send'}, status=status.HTTP_201_CREATED)
         else:
-            raise NotFound('Message Not found')
+            return Response(messageSr.errors)
+   
 
     
 
