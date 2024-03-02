@@ -34,12 +34,10 @@ class Payments(APIView):
             SerializeData.save()
             return Response({'message':'dataSuccessfully created'}, status=status.HTTP_201_CREATED)
         else:
-            print(SerializeData._errors)
             return Response(status=status.HTTP_400_BAD_REQUEST)
         
 class Appoinment(APIView):
     def get (self, request, id = None, format=None):
-        print(id)
         if id:
             appoinmentObj = Appoinments.objects.get(id=id)
             appoinmentSr = AppoinmentSerializer(appoinmentObj)
@@ -56,6 +54,7 @@ class Appoinment(APIView):
             return Response({'message':'success'}, status=status.HTTP_201_CREATED)
         else:
             return Response(AppoinmentInfo.errors, status=status.HTTP_400_BAD_REQUEST)
+        
 
   
         
@@ -75,21 +74,24 @@ def PatientsAppoinmnet(request, patientsId):
 class NotiseView(APIView):
     def get(self, request, format=None):
         notiseObj = Notise.objects.all()
-        if notiseObj.exists():
-            notiseSr = NotiseSerializer(notiseObj, many=True)
-            return Response(notiseSr.data, status=status.HTTP_200_OK)
-        else:
-            raise NotFound('Notise Not Fund')
+        notiseSr = NotiseSerializer(notiseObj, many=True)
+        return Response(notiseSr.data, status=status.HTTP_200_OK)
         
     def post(self, request, format=None):
         NoticeSr = NotiseSerializer(data=request.data)
-        print('---------------------')
-        print(NoticeSr)
         if NoticeSr.is_valid():
             NoticeSr.save()
             return Response({'message':'Notics successfully added'}, status=status.HTTP_201_CREATED)
         else:
             return Response(NoticeSr.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+    def delete(self, request, id, format=None):
+        notice = Notise.objects.get(id=id)
+        if notice:
+            notice.delete()
+            return Response({'message':'Message Deleted!'}, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         
     
 class MessageView(APIView):
