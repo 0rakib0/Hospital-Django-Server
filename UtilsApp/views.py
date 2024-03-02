@@ -81,6 +81,16 @@ class NotiseView(APIView):
         else:
             raise NotFound('Notise Not Fund')
         
+    def post(self, request, format=None):
+        NoticeSr = NotiseSerializer(data=request.data)
+        print('---------------------')
+        print(NoticeSr)
+        if NoticeSr.is_valid():
+            NoticeSr.save()
+            return Response({'message':'Notics successfully added'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(NoticeSr.errors, status=status.HTTP_400_BAD_REQUEST)
+        
     
 class MessageView(APIView):
     def get(self, request, format=None):
