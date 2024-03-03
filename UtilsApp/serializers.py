@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Payment, Appoinments, Notise, Message
 from Patients.serializers import PatientsSerializer
 from Doctors.serializers import DoctorSerializer
+from Doctors.models import Doctor
 
 
 class PaymentSerializer(serializers.ModelSerializer):
@@ -22,7 +23,7 @@ class NotiseSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class MassageSerializer(serializers.ModelSerializer):
-    doctor = DoctorSerializer()
+    doctor = serializers.PrimaryKeyRelatedField(queryset=Doctor.objects.all())
     class Meta:
         model = Message
         fields = '__all__'

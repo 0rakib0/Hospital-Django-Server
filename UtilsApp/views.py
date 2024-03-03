@@ -102,12 +102,15 @@ class MessageView(APIView):
     
     def post(self, request, format=None):
         messageSr = MassageSerializer(data=request.data)
-        print(messageSr)
+        data = request.data
+        print(type(data['doctor']))
         if messageSr.is_valid():
             print('---------------------------------')
             messageSr.save()
             return Response({'message':'Message Send'}, status=status.HTTP_201_CREATED)
         else:
+            errors_str = str(messageSr.errors)
+            print(errors_str)
             return Response(messageSr.errors)
    
 
