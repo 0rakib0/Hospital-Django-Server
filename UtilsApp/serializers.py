@@ -23,7 +23,12 @@ class NotiseSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class MassageSerializer(serializers.ModelSerializer):
-    doctor = serializers.PrimaryKeyRelatedField(queryset=Doctor.objects.all())
+    doctor = DoctorSerializer()
     class Meta:
         model = Message
         fields = '__all__'
+        
+    # def create(self, validated_data):
+    #     doctor_ins = validated_data.pop('doctor')
+    #     message_ins = Message.objects.create(doctor=doctor_ins, **validated_data)
+    #     return message_ins

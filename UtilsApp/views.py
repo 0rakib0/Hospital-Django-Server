@@ -8,6 +8,7 @@ from .serializers import PaymentSerializer, AppoinmentSerializer, NotiseSerializ
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.exceptions import NotFound
 from django.core.mail import send_mail
+from Doctors.models import Doctor
 # Create your views here.
 
 class Payments(APIView):
@@ -100,19 +101,20 @@ class MessageView(APIView):
         msgSerializer = MassageSerializer(msgObj, many=True)
         return Response(msgSerializer.data, status=status.HTTP_200_OK)
     
-    def post(self, request, format=None):
-        messageSr = MassageSerializer(data=request.data)
+    def post(self, request, format=None):        
         data = request.data
-        print(type(data['doctor']))
-        if messageSr.is_valid():
-            print('---------------------------------')
-            messageSr.save()
-            return Response({'message':'Message Send'}, status=status.HTTP_201_CREATED)
-        else:
-            errors_str = str(messageSr.errors)
-            print(errors_str)
-            return Response(messageSr.errors)
-   
+        dr = data['doctor']
+        msg = data['message']
+        
+        doctins = Doctor.objects.get(id=dr)
+        
+        saveMsg = Message (
+            doctor = doctins,
+            message = msg
+            
+        )
+        saveMsg.save()
+        return Response({'message':'Message Send'}, status=status.HTTP_201_CREATED)
 
     
 
