@@ -107,7 +107,6 @@ class MessageView(APIView):
         msg = data['message']
         
         doctins = Doctor.objects.get(id=dr)
-        
         saveMsg = Message (
             doctor = doctins,
             message = msg
@@ -115,6 +114,15 @@ class MessageView(APIView):
         )
         saveMsg.save()
         return Response({'message':'Message Send'}, status=status.HTTP_201_CREATED)
+    
+    def delete(self, request, id, format=None):
+        messageIns = Message.objects.get(id=id)
+        if messageIns:
+            messageIns.delete()
+            return Response({'message':'Message Deleted'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'message':'Message Not Deleted!'})
+            
 
     
 
