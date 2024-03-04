@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from .Manager import UserManager
 # Create your models here.
 
 class CustomUser(AbstractUser):
@@ -14,4 +15,6 @@ class CustomUser(AbstractUser):
     user_type = models.CharField(max_length=20, choices=user_roll, default = 'admin')
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['email']
+    REQUIRED_FIELDS = []
+
+    objects = UserManager()
