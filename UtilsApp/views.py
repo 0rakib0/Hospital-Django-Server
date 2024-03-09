@@ -9,6 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.exceptions import NotFound
 from django.core.mail import send_mail
 from Doctors.models import Doctor
+from Patients.models import Patients
 # Create your views here.
 
 class Payments(APIView):
@@ -49,12 +50,37 @@ class Appoinment(APIView):
             return Response(appoinmentSr.data, status=status.HTTP_200_OK)
     
     def post(self, request, format=None):
-        AppoinmentInfo = AppoinmentSerializer(data=request.data)
-        if AppoinmentInfo.is_valid():
-            AppoinmentInfo.save()
-            return Response({'message':'success'}, status=status.HTTP_201_CREATED)
-        else:
-            return Response(AppoinmentInfo.errors, status=status.HTTP_400_BAD_REQUEST)
+        # AppoinmentInfo = AppoinmentSerializer(data=request.data)
+        data = request.data
+
+        patientsID = data['patient']
+        doctorID = data['doctor']
+        department = data['department']
+        appoinmentDate = data['appoinmentDate']
+        timeSlot = data['timeSlot']
+        problems = data['problems']
+
+        patients = Patients.objects.get(id=patientsID)
+        doctor = Doctor.objects.get(id=doctorID)
+
+        appoinment = Appoinments(
+            patient = patients,
+            doctor = doctor,
+            department = department,
+            appoinmentDate = appoinmentDate,
+            timeSlot = timeSlot,
+            problems = problems
+        )
+        appoinment.save()
+        return Response({'message':'success'}, status=status.HTTP_201_CREATED)
+
+
+
+        # if AppoinmentInfo.is_valid():
+        #     AppoinmentInfo.save()
+        # else:
+        #     print(AppoinmentInfo.errors)
+        #     return Response(AppoinmentInfo.errors, status=status.HTTP_400_BAD_REQUEST)
         
 
   
