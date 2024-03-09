@@ -1,11 +1,13 @@
 from django.db import models
 import random
+from Accounts.models import CustomUser
 
 # Create your models here.
 
 randomNuber = random.randint(10,10000)
 
 class Patients(models.Model):
+    # user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
     full_name = models.CharField(max_length=160)
     patients_Id = models.CharField(max_length=150, blank=True, null=True)
     date_of_birth = models.DateField()

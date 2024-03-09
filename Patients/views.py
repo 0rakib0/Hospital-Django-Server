@@ -7,6 +7,7 @@ from .serializers import PatientsSerializer
 from rest_framework import status
 import random
 from rest_framework.parsers import MultiPartParser, FormParser
+from Accounts.models import CustomUser
 
 # Create your views here.
 
@@ -28,10 +29,23 @@ class patientsList(APIView):
     def post(self, request, format=None):
         new_patients_data = PatientsSerializer(data=request.data)
         
+        
+
         if new_patients_data.is_valid():
             if new_patients_data:
                 print(True)
             new_patients_data.save()
+            data = request.data
+            password = data['password']
+            email = data['email']
+            
+            user = CustomUser(
+                email=email,
+            )
+
+            user.set_password(password)
+            user.save()
+
             return Response({'message':'Data Successfully submited'}, status=status.HTTP_201_CREATED)
         else:
             print(new_patients_data.errors)
