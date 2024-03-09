@@ -6,6 +6,7 @@ from Doctors.models import Doctor
 from Doctors.serializers import DoctorSerializer
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
+from Accounts.models import CustomUser
 # Create your views here.
 
 
@@ -26,8 +27,17 @@ class Doctors(APIView):
     
     def post(self, request, format=None):
         doctor_serializer = DoctorSerializer(data=request.data)
+        data = request.data
+        email = data['email']
+        password = data['password']
         if doctor_serializer.is_valid():
             doctor_serializer.save()
+            user = CustomUser(
+                email=email,
+                user_type = 'doctor'
+            )
+            user.set_password(password)
+            user.save()
             return Response({'message':'doctor successfully added'}, status=status.HTTP_201_CREATED)
         else:
             # print(doctor_serializer.errors)

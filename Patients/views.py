@@ -101,6 +101,8 @@ def inTreatment(request):
     
 @api_view(['GET'])
 def singlePatientsInfo(request, email):
+    print('----------------------------------------------------')
+    print(email)
     signlePatients = Patients.objects.get(email=email)
     patientsSerializer = PatientsSerializer(signlePatients)
     return Response(patientsSerializer.data, status=status.HTTP_200_OK)
