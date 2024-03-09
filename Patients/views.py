@@ -41,6 +41,7 @@ class patientsList(APIView):
             
             user = CustomUser(
                 email=email,
+                user_type = 'patients'
             )
 
             user.set_password(password)
@@ -97,6 +98,12 @@ def inTreatment(request):
         return Response(inTreatment.data, status=status.HTTP_200_OK)
     else:
         return Response(inTreatment.error, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+def singlePatientsInfo(request, email):
+    signlePatients = Patients.objects.get(email=email)
+    patientsSerializer = PatientsSerializer(signlePatients)
+    return Response(patientsSerializer.data, status=status.HTTP_200_OK)
     
     
 
