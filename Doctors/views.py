@@ -7,8 +7,8 @@ from Doctors.serializers import DoctorSerializer
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 from Accounts.models import CustomUser
-from UtilsApp.models import Appoinments
-from UtilsApp.serializers import AppoinmentSerializer
+from UtilsApp.models import Appoinments, Message
+from UtilsApp.serializers import AppoinmentSerializer, MassageSerializer
 # Create your views here.
 
 
@@ -79,4 +79,11 @@ def DrReletedAppoinment(request, email):
     doctor = Doctor.objects.get(email=email)
     apoinment = Appoinments.objects.filter(doctor=doctor)
     serelizeData = AppoinmentSerializer(apoinment, many=True)
+    return Response(serelizeData.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def DrReletedMessage(request, email):
+    doctor = Doctor.objects.get(email=email)
+    message = Message.objects.filter(doctor=doctor)
+    serelizeData = MassageSerializer(message, many=True)
     return Response(serelizeData.data, status=status.HTTP_200_OK)
