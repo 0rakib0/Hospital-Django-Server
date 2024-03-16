@@ -14,12 +14,13 @@ from Patients.models import Patients
 
 class Payments(APIView):
     # send_mail(
-    #     "first email send",
-    #     "Hello I want to sest Send email.",
+    #     "Gulshan Clinick",
+    #     "Hello Rakib Your patients successfully addes. email: rakib@gmail.com, password:11223344 use this email and password for see update about patients.",
     #     "hassanrakibul926@gmail.com",
-    #     ["neyamew161@artgulin.com"],
+    #     ["vegik62741@fryshare.com"],
     #     fail_silently=False,
     # )
+    print('Hello -----------I am Accessing Email-')
     def get(self, request, userId=None, format=None):
         if userId:
             paymentObj = Payment.objects.filter(patient=userId)

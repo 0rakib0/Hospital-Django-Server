@@ -14,9 +14,7 @@ from UtilsApp.serializers import AppoinmentSerializer, MassageSerializer
 
 # ----------------------------- Doctor Releted View ------------------------------
 class Doctors(APIView):
-    
     parser_classes = (MultiPartParser, FormParser)
-    
     def get(self, request, id=None, format=None):
         if id:
             doctor_obj = Doctor.objects.get(id=id)
