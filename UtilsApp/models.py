@@ -32,7 +32,8 @@ class Appoinments(models.Model):
     tokenNumber = models.CharField(max_length=20, blank=True, null=True)
     problems = models.TextField()
     tokenNumber = models.CharField(max_length=20, blank=True, null=True)
-    approveStatus = models.CharField(max_length=20, blank=True, null=True , default='Pending')
+    reject = models.BooleanField(default=False)
+    approveStatus = models.BooleanField(default=False)
     createdAtt        = models.DateTimeField(auto_now_add=True)
     
     

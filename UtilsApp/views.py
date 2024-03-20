@@ -77,11 +77,22 @@ class Appoinment(APIView):
 
 
 
-        # if AppoinmentInfo.is_valid():
-        #     AppoinmentInfo.save()
-        # else:
-        #     print(AppoinmentInfo.errors)
-        #     return Response(AppoinmentInfo.errors, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['GET'])
+def UpdateAppoinemntStatus(request, id):
+    appoinment_status = request.query_params.get('status')
+    appoinment = Appoinments.objects.get(id=id)
+    if appoinment_status == 'approve':
+        appoinment.approveStatus = True
+        appoinment.save()
+        return Response({'message':'Status Updated To Approve'}, status=status.HTTP_200_OK)
+    
+    elif appoinment_status == 'reject':
+        appoinment.reject = True
+        appoinment.save()
+        return Response({'message':'Status Updated To Reject'}, status=status.HTTP_200_OK)
+    
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
         
 
   
