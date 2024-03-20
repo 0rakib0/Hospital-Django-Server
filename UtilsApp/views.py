@@ -74,7 +74,14 @@ class Appoinment(APIView):
         )
         appoinment.save()
         return Response({'message':'success'}, status=status.HTTP_201_CREATED)
-
+    
+    def delete(self, request, id, format=None):
+        appoinmentObj = Appoinments.objects.get(id=id)
+        if appoinmentObj:
+            appoinmentObj.delete()
+            return Response({'message':'deleted'}, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
