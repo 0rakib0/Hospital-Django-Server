@@ -7,20 +7,11 @@ from .models import Payment, Appoinments, Notise, Message
 from .serializers import PaymentSerializer, AppoinmentSerializer, NotiseSerializer, MassageSerializer
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.exceptions import NotFound
-from django.core.mail import send_mail
 from Doctors.models import Doctor
 from Patients.models import Patients
 # Create your views here.
 
 class Payments(APIView):
-    # send_mail(
-    #     "Gulshan Clinick",
-    #     "Hello Rakib Your patients successfully addes. email: rakib@gmail.com, password:11223344 use this email and password for see update about patients.",
-    #     "hassanrakibul926@gmail.com",
-    #     ["vegik62741@fryshare.com"],
-    #     fail_silently=False,
-    # )
-    print('Hello -----------I am Accessing Email-')
     def get(self, request, userId=None, format=None):
         if userId:
             paymentObj = Payment.objects.filter(patient=userId)
