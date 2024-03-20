@@ -51,7 +51,6 @@ class patientsList(APIView):
             user.set_password(password)
             user.save()
             pattiemtsAccountCreateMail(email, password)
-
             return Response({'message':'Data Successfully submited'}, status=status.HTTP_201_CREATED)
         else:
             print(new_patients_data.errors)

@@ -9,6 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.exceptions import NotFound
 from Doctors.models import Doctor
 from Patients.models import Patients
+from .sendMail import paymentConfirmMail
 # Create your views here.
 
 class Payments(APIView):
@@ -24,8 +25,15 @@ class Payments(APIView):
         
     def post(self, request, format=None):
         SerializeData = PaymentSerializer(data=request.data)
+        data = request.data
+        PatientsId = data['patientId']
+        email = data['patientEmail']
+        service = data['service']
+        paymentType = data['paymentType']
+        costOfTreatment = data['costOfTreatment']
         if SerializeData.is_valid():
             SerializeData.save()
+            paymentConfirmMail(email, PatientsId, service, paymentType, costOfTreatment)
             return Response({'message':'dataSuccessfully created'}, status=status.HTTP_201_CREATED)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)

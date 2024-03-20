@@ -9,3 +9,12 @@ def pattiemtsAccountCreateMail(email, password):
         [email],
         fail_silently=False,
     )
+
+def paymentConfirmMail(email, PatientsId, service, paymentType, costOfTreatment):
+    send_mail(
+        "Gulshan Clinick",
+        f"Your Payment Successfully Paid,  Patient Id: {PatientsId},  Service Name: {service},  Payment Type: {paymentType},  Total Amount: {costOfTreatment}tk",
+        "hassanrakibul926@gmail.com",
+        [email],
+        fail_silently=False,
+    )
