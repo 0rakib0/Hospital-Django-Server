@@ -106,6 +106,17 @@ def singlePatientsInfo(request, email):
     signlePatients = Patients.objects.get(email=email)
     patientsSerializer = PatientsSerializer(signlePatients)
     return Response(patientsSerializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def updatePatientStatus(request, id):
+    patients = Patients.objects.get(id=id)
+    if patients:
+        patients.disCharged = True
+        patients.save()
+        return Response({'message':'Patients Successfully discharge'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'message':'No Patients Available with this id'}, status=status.HTTP_404_NOT_FOUND)
     
     
 

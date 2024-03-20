@@ -7,4 +7,5 @@ urlpatterns = [
     path('discharge-patients/', views.dischargePatients, name='discharge_patients'),
     path('in-treatment-patients/', views.inTreatment, name='intreatment_patients'),
     path('single-patient/<str:email>/', views.singlePatientsInfo, name='patientsInfo'),
+    path('update-patients-status/<int:id>/', views.updatePatientStatus, name='update_patients_status')
 ]
