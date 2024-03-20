@@ -18,3 +18,13 @@ def paymentConfirmMail(email, PatientsId, service, paymentType, costOfTreatment)
         [email],
         fail_silently=False,
     )
+
+
+def DoctorAccountCreateMail(email, password):
+    send_mail(
+        "Gulshan Clinick",
+        f"Hello! Doctor. Your account successfully ceated please go this website and with with our creadential http://localhost:5173/ and get update abour work Password: {password} and Email: {email}",
+        "hassanrakibul926@gmail.com",
+        [email],
+        fail_silently=False,
+    )
