@@ -7,9 +7,9 @@ from .models import Payment, Appoinments, Notise, Message
 from .serializers import PaymentSerializer, AppoinmentSerializer, NotiseSerializer, MassageSerializer
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.exceptions import NotFound
-from django.core.mail import send_mail
 from Doctors.models import Doctor
 from Patients.models import Patients
+from .sendMail import paymentConfirmMail
 # Create your views here.
 
 class Payments(APIView):
@@ -25,8 +25,15 @@ class Payments(APIView):
         
     def post(self, request, format=None):
         SerializeData = PaymentSerializer(data=request.data)
+        data = request.data
+        PatientsId = data['patientId']
+        email = data['patientEmail']
+        service = data['service']
+        paymentType = data['paymentType']
+        costOfTreatment = data['costOfTreatment']
         if SerializeData.is_valid():
             SerializeData.save()
+            paymentConfirmMail(email, PatientsId, service, paymentType, costOfTreatment)
             return Response({'message':'dataSuccessfully created'}, status=status.HTTP_201_CREATED)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -66,14 +73,32 @@ class Appoinment(APIView):
         )
         appoinment.save()
         return Response({'message':'success'}, status=status.HTTP_201_CREATED)
+    
+    def delete(self, request, id, format=None):
+        appoinmentObj = Appoinments.objects.get(id=id)
+        if appoinmentObj:
+            appoinmentObj.delete()
+            return Response({'message':'deleted'}, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-
-        # if AppoinmentInfo.is_valid():
-        #     AppoinmentInfo.save()
-        # else:
-        #     print(AppoinmentInfo.errors)
-        #     return Response(AppoinmentInfo.errors, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['GET'])
+def UpdateAppoinemntStatus(request, id):
+    appoinment_status = request.query_params.get('status')
+    appoinment = Appoinments.objects.get(id=id)
+    if appoinment_status == 'approve':
+        appoinment.approveStatus = True
+        appoinment.save()
+        return Response({'message':'Status Updated To Approve'}, status=status.HTTP_200_OK)
+    
+    elif appoinment_status == 'reject':
+        appoinment.reject = True
+        appoinment.save()
+        return Response({'message':'Status Updated To Reject'}, status=status.HTTP_200_OK)
+    
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
         
 
   

@@ -8,6 +8,7 @@ from rest_framework import status
 import random
 from rest_framework.parsers import MultiPartParser, FormParser
 from Accounts.models import CustomUser
+from UtilsApp.sendMail import pattiemtsAccountCreateMail
 
 # Create your views here.
 
@@ -29,7 +30,10 @@ class patientsList(APIView):
     def post(self, request, format=None):
         new_patients_data = PatientsSerializer(data=request.data)
         
-        
+        data = request.data
+
+        email = data['email']
+        email = data['password']
 
         if new_patients_data.is_valid():
             if new_patients_data:
@@ -46,7 +50,7 @@ class patientsList(APIView):
 
             user.set_password(password)
             user.save()
-
+            pattiemtsAccountCreateMail(email, password)
             return Response({'message':'Data Successfully submited'}, status=status.HTTP_201_CREATED)
         else:
             print(new_patients_data.errors)
