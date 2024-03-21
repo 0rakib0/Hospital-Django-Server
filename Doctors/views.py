@@ -9,6 +9,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from Accounts.models import CustomUser
 from UtilsApp.models import Appoinments, Message
 from UtilsApp.serializers import AppoinmentSerializer, MassageSerializer
+from UtilsApp.sendMail import DoctorAccountCreateMail
 # Create your views here.
 
 
@@ -38,6 +39,7 @@ class Doctors(APIView):
             )
             user.set_password(password)
             user.save()
+            DoctorAccountCreateMail(email, password)
             return Response({'message':'doctor successfully added'}, status=status.HTTP_201_CREATED)
         else:
             # print(doctor_serializer.errors)
