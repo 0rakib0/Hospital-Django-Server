@@ -123,12 +123,13 @@ def UpdateAppoinemntStatus(request, id):
 @api_view(['GET'])
 def PatientsAppoinmnet(request, patientsId):
     try:
-        appoinmentObj = Appoinments.objects.filter(patient = patientsId)
-        if appoinmentObj.exists():
-            appoinmentSr = AppoinmentSerializer(appoinmentObj, many=True)
-            return Response(appoinmentSr.data, status=status.HTTP_200_OK)
-        else:
-            raise ObjectDoesNotExist
+       if patientsId:
+            appoinmentObj = Appoinments.objects.filter(patient = patientsId)
+            if appoinmentObj.exists():
+                appoinmentSr = AppoinmentSerializer(appoinmentObj, many=True)
+                return Response(appoinmentSr.data, status=status.HTTP_200_OK)
+            else:
+                raise ObjectDoesNotExist
     except ObjectDoesNotExist:
         raise NotFound('Appoinment nt found for the given patients ID')
 
