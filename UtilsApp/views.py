@@ -81,6 +81,20 @@ class Appoinment(APIView):
             return Response({'message':'deleted'}, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+@api_view(['GET'])
+def FilterAppoinment(request):
+    filterData = request.query_params.get('filter')
+
+    if filterData == 'approve':
+        approveAppoinment = Appoinments.objects.filter(approveStatus=True)
+        approneSerializer = AppoinmentSerializer(approveAppoinment, many=True)
+        return Response(approneSerializer.data, status=status.HTTP_200_OK)
+    elif filterData == 'reject':
+        pass
+    print(filterData)
+    return Response(status=status.HTTP_200_OK)
+
 
 
 @api_view(['GET'])
