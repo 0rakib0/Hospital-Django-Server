@@ -91,9 +91,11 @@ def FilterAppoinment(request):
         approneSerializer = AppoinmentSerializer(approveAppoinment, many=True)
         return Response(approneSerializer.data, status=status.HTTP_200_OK)
     elif filterData == 'reject':
-        pass
-    print(filterData)
-    return Response(status=status.HTTP_200_OK)
+        rejectAppoinment = Appoinments.objects.filter(reject=True)
+        serialize = AppoinmentSerializer(rejectAppoinment, many=True)
+        return Response(serialize.data, status=status.HTTP_200_OK)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 
