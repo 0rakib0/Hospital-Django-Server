@@ -12,6 +12,13 @@ from Patients.models import Patients
 from .sendMail import paymentConfirmMail
 # Create your views here.
 
+
+
+@api_view(['GET'])
+def Home(request):
+    server_helth = {'Server Helth':'Server Helth is Totally Good!'}
+    return Response(server_helth, status=status.HTTP_200_OK)
+
 class Payments(APIView):
     def get(self, request, userId=None, format=None):
         if userId:
