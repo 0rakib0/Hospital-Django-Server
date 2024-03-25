@@ -12,6 +12,13 @@ from Patients.models import Patients
 from .sendMail import paymentConfirmMail
 # Create your views here.
 
+
+
+@api_view(['GET'])
+def Home(request):
+    server_helth = {'Server Helth':'Server Helth is Totally Good!'}
+    return Response(server_helth, status=status.HTTP_200_OK)
+
 class Payments(APIView):
     def get(self, request, userId=None, format=None):
         if userId:
@@ -81,6 +88,22 @@ class Appoinment(APIView):
             return Response({'message':'deleted'}, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+@api_view(['GET'])
+def FilterAppoinment(request):
+    filterData = request.query_params.get('filter')
+
+    if filterData == 'approve':
+        approveAppoinment = Appoinments.objects.filter(approveStatus=True)
+        approneSerializer = AppoinmentSerializer(approveAppoinment, many=True)
+        return Response(approneSerializer.data, status=status.HTTP_200_OK)
+    elif filterData == 'reject':
+        rejectAppoinment = Appoinments.objects.filter(reject=True)
+        serialize = AppoinmentSerializer(rejectAppoinment, many=True)
+        return Response(serialize.data, status=status.HTTP_200_OK)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 
 @api_view(['GET'])
@@ -107,12 +130,13 @@ def UpdateAppoinemntStatus(request, id):
 @api_view(['GET'])
 def PatientsAppoinmnet(request, patientsId):
     try:
-        appoinmentObj = Appoinments.objects.filter(patient = patientsId)
-        if appoinmentObj.exists():
-            appoinmentSr = AppoinmentSerializer(appoinmentObj, many=True)
-            return Response(appoinmentSr.data, status=status.HTTP_200_OK)
-        else:
-            raise ObjectDoesNotExist
+       if patientsId:
+            appoinmentObj = Appoinments.objects.filter(patient = patientsId)
+            if appoinmentObj.exists():
+                appoinmentSr = AppoinmentSerializer(appoinmentObj, many=True)
+                return Response(appoinmentSr.data, status=status.HTTP_200_OK)
+            else:
+                raise ObjectDoesNotExist
     except ObjectDoesNotExist:
         raise NotFound('Appoinment nt found for the given patients ID')
 
