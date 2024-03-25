@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 import os
+import cloudinary_storage
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -53,7 +54,8 @@ INSTALLED_APPS = [
     "corsheaders",
     "UtilsApp",
     "Accounts",
-    'rest_framework_simplejwt.token_blacklist'
+    'rest_framework_simplejwt.token_blacklist',
+    'cloudinary_storage'
 ]
 
 
@@ -161,6 +163,13 @@ STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
 # media file setting
 MEDIA_ROOT  = MEDIA_DIR
 MEDIA_URL = '/media/'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dquqayzba',
+    'API_KEY': '138712985671313',
+    'API_SECRET': '541phSaosQMhCsumsA2ijh2zZYc'
+}
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
