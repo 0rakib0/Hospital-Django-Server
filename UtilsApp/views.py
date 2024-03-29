@@ -16,7 +16,7 @@ from .sendMail import paymentConfirmMail
 
 @api_view(['GET'])
 def Home(request):
-    server_helth = {'Server Helth':'Server Helth is Totally Good!'}
+    server_helth = {'Server Helth':'Server Helth is Totally Good! version-1.2'}
     return Response(server_helth, status=status.HTTP_200_OK)
 
 class Payments(APIView):
