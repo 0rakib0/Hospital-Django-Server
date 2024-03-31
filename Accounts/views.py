@@ -25,9 +25,9 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 
 class UserInfo(APIView):
-    def get(self, request, id, format=None):
+    def get(self, request, email, format=None):
         if id:
-            userInfo = user.objects.get(id=id)
+            userInfo = user.objects.get(email=email)
             serializeData = UserSerializer(userInfo)
             return Response(serializeData.data, status=status.HTTP_200_OK)
         else:
