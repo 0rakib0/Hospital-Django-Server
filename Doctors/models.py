@@ -3,7 +3,6 @@ import random
 
 # Create your models here.
 
-randomNuber = random.randint(10,10000)
 
 class Doctor(models.Model):
     doctorName = models.CharField(max_length=256)
@@ -22,8 +21,19 @@ class Doctor(models.Model):
 
 
     def save(self, *args, **kwargs):
-        self.doctorId = (f"DR-{randomNuber}")
+        if not self.doctorId:
+            self.doctorId = self.generat_unique_doctorid()
         super(Doctor, self).save(*args, **kwargs)
+        
+        
+    def generat_unique_doctorid(self):
+        while True:
+            randomNuber = random.randint(10,10000)
+            doctor_id =f"DR-{randomNuber}"
+            if not Doctor.objects.filter(doctorId = doctor_id).exists():
+                return doctor_id
+            
+            
 
     def __str__(self) -> str:
         return self.doctorName
