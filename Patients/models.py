@@ -4,7 +4,7 @@ from Accounts.models import CustomUser
 
 # Create your models here.
 
-randomNuber = random.randint(10,10000)
+
 
 class Patients(models.Model):
     # user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
@@ -22,8 +22,17 @@ class Patients(models.Model):
     create_at = models.DateTimeField(auto_now_add=True)
     
     def save(self, *args, **kwargs):
-        self.patients_Id = (f"PT-{randomNuber}")
+        if not self.patients_Id:
+            self.patients_Id = self.generat_unique_patiientsID()
         super(Patients, self).save(*args, **kwargs)
+        
+        
+    def generat_unique_patiientsID(self):
+        while True:
+            randomNuber = random.randint(10,10000)
+            patients_id = f"PT-{randomNuber}"
+            if not Patients.objects.filter(patients_Id=patients_id).exists():
+                return patients_id
     
 
 
