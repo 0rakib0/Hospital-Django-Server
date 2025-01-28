@@ -112,11 +112,11 @@ WSGI_APPLICATION = 'HospitalDjangoServer.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'RvLOIgIolYSVrGjdZHpgGgNxozfdtlaK',
-        'HOST': 'roundhouse.proxy.rlwy.net',
-        'PORT': '55521',
+        'NAME': 'postgres',
+        'USER': 'postgres.qtjepalsyivakrqgptpt',
+        'PASSWORD': 'gpR72dNkWeGJbnVn',
+        'HOST': 'aws-0-ap-southeast-1.pooler.supabase.com',
+        'PORT': '6543',
     }
 }
 
