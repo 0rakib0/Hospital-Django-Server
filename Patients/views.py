@@ -85,17 +85,14 @@ class patientsList(APIView):
     
     def delete(self, request, id, format=None):
         patient_object = Patients.objects.get(id=id)
-        print("Email------------------------")
         email = patient_object.email
         user = CustomUser.objects.get(email=email)
-        print(email)
-        print("user",user)
-        if patient_object:
+        try:
             patient_object.delete()
             user.delete()
             return Response({'message':'success'}, status=status.HTTP_200_OK)
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         
 @api_view(['GEt'])
