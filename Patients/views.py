@@ -8,9 +8,21 @@ from rest_framework import status
 import random
 from rest_framework.parsers import MultiPartParser, FormParser
 from Accounts.models import CustomUser
+from Accounts.serializer import UserSerializer
 from UtilsApp.sendMail import pattiemtsAccountCreateMail
 
 # Create your views here.
+
+# get al user endpint
+
+@api_view(['GET'])
+def userList(request):
+    user_list = CustomUser.objects.all()
+    serializer = UserSerializer(user_list, many=True)
+    print("Hello Banglesh----------------")
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 
 
 # -------------------- Patients Releted Views -------------------------
@@ -30,16 +42,12 @@ class patientsList(APIView):
     def post(self, request, format=None):
         new_patients_data = PatientsSerializer(data=request.data)
         
-        data = request.data
 
-        email = data['email']
-        email = data['password']
 
         if new_patients_data.is_valid():
-            if new_patients_data:
-                print(True)
             new_patients_data.save()
             data = request.data
+            
             password = data['password']
             email = data['email']
             
@@ -77,8 +85,14 @@ class patientsList(APIView):
     
     def delete(self, request, id, format=None):
         patient_object = Patients.objects.get(id=id)
+        print("Email------------------------")
+        email = patient_object.email
+        user = CustomUser.objects.get(email=email)
+        print(email)
+        print("user",user)
         if patient_object:
             patient_object.delete()
+            user.delete()
             return Response({'message':'success'}, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)

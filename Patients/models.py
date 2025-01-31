@@ -1,13 +1,15 @@
 from django.db import models
 import random
 from Accounts.models import CustomUser
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 
 
 
 class Patients(models.Model):
-    # user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
     full_name = models.CharField(max_length=160)
     patients_Id = models.CharField(max_length=150, blank=True, null=True)
     date_of_birth = models.DateField()
@@ -38,6 +40,10 @@ class Patients(models.Model):
 
     def __str__(self) -> str:
         return self.full_name
+    
+    
+    
+    
     
 
 

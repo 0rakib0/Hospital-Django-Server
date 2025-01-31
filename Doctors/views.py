@@ -28,10 +28,12 @@ class Doctors(APIView):
     
     def post(self, request, format=None):
         doctor_serializer = DoctorSerializer(data=request.data)
-        data = request.data
-        email = data['email']
-        password = data['password']
         if doctor_serializer.is_valid():
+            data = request.data
+            
+            password = data['password']
+            email = data['email']
+            
             doctor_serializer.save()
             user = CustomUser(
                 email=email,
@@ -42,7 +44,6 @@ class Doctors(APIView):
             DoctorAccountCreateMail(email, password)
             return Response({'message':'doctor successfully added'}, status=status.HTTP_201_CREATED)
         else:
-            # print(doctor_serializer.errors)
             return Response(status=status.HTTP_400_BAD_REQUEST)
         
     def put(self, request, id, format=None):
@@ -66,9 +67,11 @@ class Doctors(APIView):
     
     def delete(self, request, id, format=None):
         doctorObje = Doctor.objects.get(id=id)
-        print('---------------------------Doctor Try to delete---------------')
+        email = doctorObje.email
+        user = CustomUser.objects.get(email=email)
         if doctorObje:
             doctorObje.delete()
+            user.delete()
             return Response({'message':'doctor successfully added'}, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)

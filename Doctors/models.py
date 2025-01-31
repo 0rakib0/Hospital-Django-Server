@@ -1,10 +1,11 @@
 from django.db import models
 import random
-
+from Accounts.models import CustomUser
 # Create your models here.
 
 
 class Doctor(models.Model):
+    # user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     doctorName = models.CharField(max_length=256)
     doctorId = models.CharField(max_length=20, blank=True, null=True, unique=True)
     date_of_birth = models.DateField()
